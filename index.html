@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hadi - Motion Editor & Web Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f0f0f',
+                        secondary: '#222222',
+                        cyan: '#00FFFF',
+                        magenta: '#FF00FF',
+                        lime: '#00FF00'
+                    },
+                    fontFamily: {
+                        heading: ['Bebas Neue', 'sans-serif'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #222 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        .neon-text {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+        .neon-border {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+        .hero-bg {
+            background: radial-gradient(circle at center, rgba(15, 15, 15, 0.8) 0%, rgba(15, 15, 15, 0.9) 100%);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+        }
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .video-container video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.2;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 4px;
+            background: linear-gradient(to bottom, #00FFFF, #FF00FF);
+        }
+    </style>
+</head>
+<body class="font-body">
+    <!-- Navigasi -->
+    <nav class="fixed w-full z-50 bg-dark/90 backdrop-blur-sm py-4 px-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-heading text-white">Zulfikar<span class="text-cyan">.</span></a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-white hover:text-cyan transition">Home</a>
+                <a href="#portfolio" class="text-white hover:text-cyan transition">Portfolio</a>
+                <a href="#about" class="text-white hover:text-cyan transition">About</a>
+                <a href="#contact" class="text-white hover:text-cyan transition">Contact</a>
+            </div>
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="video-container">
+            <video autoplay muted loop playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-motion-background-36915-large.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-bg absolute inset-0 z-0"></div>
+        <div class="relative z-10 text-center px-4 py-20 max-w-4xl">
+            <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl text-white mb-4">
+                Hi, I'm <span class="text-cyan neon-text">Zulfikar</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-10 text-white">
+                Motion Editor & <span class="text-magenta">Web Designer</span>
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#portfolio" class="px-8 py-3 bg-cyan text-dark font-bold rounded-full hover:bg-white transition duration-300 transform hover:scale-105">
+                    View My Work
+                </a>
+                <a href="#contact" class="px-8 py-3 border-2 border-cyan text-white font-bold rounded-full hover:bg-cyan/20 transition duration-300 transform hover:scale-105">
+                    Contact Me
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- What I Do -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="font-heading text-4xl md:text-5xl text-center mb-16 text-white">
+                What I <span class="text-cyan">Do</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Motion Editor -->
+                <div class="gradient-bg rounded-2xl p-8 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-cyan/10 flex items-center justify-center mr-4">
+                            <i class="fas fa-film text-3xl text-cyan"></i>
+                        </div>
+                        <h3 class="font-heading text-3xl text-white">Creative Motion Editor</h3>
+                    </div>
+                    <p class="text-lg mb-6">
+                        Transforming visions into captivating visual stories through motion and effects.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-play-circle text-magenta mr-3"></i>
+                            <span>Cinematic edits that tell powerful stories</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-music text-lime mr-3"></i>
+                            <span>Lyric videos that sync perfectly with music</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-font text-cyan mr-3"></i>
+                            <span>Dynamic motion typography</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-star text-yellow-400 mr-3"></i>
+                            <span>Specialized in anime and custom AM edits</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Web Developer -->
+                <div class="gradient-bg rounded-2xl p-8 card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-magenta/10 flex items-center justify-center mr-4">
+                            <i class="fas fa-code text-3xl text-magenta"></i>
+                        </div>
+                        <h3 class="font-heading text-3xl text-white">Frontend Developer</h3>
+                    </div>
+                    <p class="text-lg mb-6">
+                        Crafting engaging, responsive, and visually stunning web experiences.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-paint-brush text-cyan mr-3"></i>
+                            <span>Modern UI/UX with intuitive interactions</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-bolt text-lime mr-3"></i>
+                            <span>Animation-driven interfaces that captivate</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-ruler-combined text-magenta mr-3"></i>
+                            <span>Pixel-perfect implementation</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-mobile-alt text-cyan mr-3"></i>
+                            <span>Fully responsive across all devices</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio" class="py-20 px-4 bg-secondary">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="font-heading text-4xl md:text-5xl text-center mb-16 text-white">
+                My <span class="text-cyan">Portfolio</span>
+            </h2>
+            
+            <!-- Motion Projects -->
+            <div class="mb-20">
+                <h3 class="font-heading text-3xl text-white mb-8 flex items-center">
+                    <i class="fas fa-video mr-3 text-magenta"></i> Motion Projects
+                </h3>
+                
+                <!-- Filter -->
+                <div class="flex flex-wrap gap-3 mb-8">
+                    <button class="px-4 py-2 bg-cyan text-dark rounded-full font-bold">All</button>
+                    <button class="px-4 py-2 bg-dark border border-cyan text-white rounded-full hover:bg-cyan/20">Cinematic</button>
+                    <button class="px-4 py-2 bg-dark border border-magenta text-white rounded-full hover:bg-magenta/20">Lyric</button>
+                    <button class="px-4 py-2 bg-dark border border-lime text-white rounded-full hover:bg-lime/20">Anime</button>
+                    <button class="px-4 py-2 bg-dark border border-cyan text-white rounded-full hover:bg-cyan/20">Custom</button>
+                </div>
+                
+                <!-- Gallery -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Project 1 -->
+                    <div class="rounded-xl overflow-hidden bg-dark border border-cyan/30 card-hover">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1574717024453-354056aafa98?q=80&w=2000" alt="Project" class="w-full h-56 object-cover">
+                            <div class="absolute inset-0 bg-cyan/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                <button class="w-16 h-16 rounded-full bg-cyan/80 flex items-center justify-center">
+                                    <i class="fas fa-play text-2xl text-dark"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-white mb-2">Epic Cinematic Trailer</h4>
+                            <p class="text-cyan mb-3">Alight Motion • After Effects</p>
+                            <p class="text-sm">1:30 min • Dynamic transitions • Color grading</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 2 -->
+                    <div class="rounded-xl overflow-hidden bg-dark border border-magenta/30 card-hover">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2000" alt="Project" class="w-full h-56 object-cover">
+                            <div class="absolute inset-0 bg-magenta/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                <button class="w-16 h-16 rounded-full bg-magenta/80 flex items-center justify-center">
+                                    <i class="fas fa-play text-2xl text-dark"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-white mb-2">Song Lyric Visualizer</h4>
+                            <p class="text-magenta mb-3">Alight Motion • Illustrator</p>
+                            <p class="text-sm">3:45 min • Kinetic typography • Audio-reactive</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 3 -->
+                    <div class="rounded-xl overflow-hidden bg-dark border border-lime/30 card-hover">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=2000" alt="Project" class="w-full h-56 object-cover">
+                            <div class="absolute inset-0 bg-lime/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                <button class="w-16 h-16 rounded-full bg-lime/80 flex items-center justify-center">
+                                    <i class="fas fa-play text-2xl text-dark"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="text-xl font-bold text-white mb-2">Anime Opening Sequence</h4>
+                            <p class="text-lime mb-3">Alight Motion • Photoshop</p>
+                            <p class="text-sm">1:15 min • Character animation • Particle effects</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Web Projects -->
+            <div>
+                <h3 class="font-heading text-3xl text-white mb-8 flex items-center">
+                    <i class="fas fa-laptop-code mr-3 text-cyan"></i> Web Projects
+                </h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Web Project 1 -->
+                    <div class="bg-dark rounded-xl p-6 border border-cyan/30 card-hover">
+                        <div class="mb-4 relative">
+                            <div class="bg-gray-800 rounded-lg h-48 flex items-center justify-center">
+                                <div class="relative">
+                                    <div class="w-16 h-10 bg-gray-700 rounded-t-lg mx-auto"></div>
+                                    <div class="w-64 h-36 bg-gradient-to-r from-cyan/20 to-magenta/20 rounded-lg border border-cyan/30 p-4">
+                                        <div class="bg-cyan/30 h-4 w-3/4 mb-2 rounded"></div>
+                                        <div class="bg-cyan/20 h-3 w-1/2 mb-1 rounded"></div>
+                                        <div class="bg-magenta/20 h-3 w-2/3 rounded"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Interactive Portfolio</h4>
+                        <p class="mb-4">Modern portfolio with GSAP animations and Tailwind CSS styling.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-cyan/10 text-cyan rounded-full text-sm">Tailwind</span>
+                            <span class="px-3 py-1 bg-magenta/10 text-magenta rounded-full text-sm">GSAP</span>
+                            <span class="px-3 py-1 bg-lime/10 text-lime rounded-full text-sm">JavaScript</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="#" class="text-cyan hover:text-white">
+                                <i class="fab fa-github mr-1"></i> GitHub
+                            </a>
+                            <a href="#" class="text-cyan hover:text-white">
+                                <i class="fas fa-external-link-alt mr-1"></i> Live Demo
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Web Project 2 -->
+                    <div class="bg-dark rounded-xl p-6 border border-magenta/30 card-hover">
+                        <div class="mb-4 relative">
+                            <div class="bg-gray-800 rounded-lg h-48 flex items-center justify-center">
+                                <div class="relative">
+                                    <div class="w-12 h-8 bg-gray-700 rounded-full mx-auto mb-1"></div>
+                                    <div class="w-40 h-64 bg-gradient-to-b from-magenta/20 to-cyan/20 rounded-xl border border-magenta/30 p-3">
+                                        <div class="bg-white/10 h-6 rounded mb-2"></div>
+                                        <div class="bg-white/10 h-4 w-3/4 rounded mb-1"></div>
+                                        <div class="bg-white/10 h-4 w-1/2 rounded mb-3"></div>
+                                        <div class="bg-cyan/30 h-8 rounded-lg"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">E-Commerce Dashboard</h4>
+                        <p class="mb-4">Analytics dashboard with real-time data visualization.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-cyan/10 text-cyan rounded-full text-sm">React</span>
+                            <span class="px-3 py-1 bg-magenta/10 text-magenta rounded-full text-sm">Chart.js</span>
+                            <span class="px-3 py-1 bg-lime/10 text-lime rounded-full text-sm">Firebase</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="#" class="text-magenta hover:text-white">
+                                <i class="fab fa-github mr-1"></i> GitHub
+                            </a>
+                            <a href="#" class="text-magenta hover:text-white">
+                                <i class="fas fa-external-link-alt mr-1"></i> Live Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me -->
+    <section id="about" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="font-heading text-4xl md:text-5xl text-center mb-16 text-white">
+                About <span class="text-cyan">Me</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="rounded-full w-64 h-64 mx-auto bg-gradient-to-br from-cyan via-magenta to-lime p-1">
+                        <div class="w-full h-full rounded-full bg-dark overflow-hidden">
+                            <img src="images/download.png" alt="Hadi" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="absolute top-0 -right-4 w-16 h-16 rounded-full bg-cyan/10 flex items-center justify-center">
+                        <i class="fas fa-play text-2xl text-cyan"></i>
+                    </div>
+                    <div class="absolute bottom-10 -left-4 w-16 h-16 rounded-full bg-magenta/10 flex items-center justify-center">
+                        <i class="fas fa-code text-2xl text-magenta"></i>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-heading text-3xl text-white mb-6">My Journey</h3>
+                    <p class="mb-6">
+                        From creating my first AM edits to developing interactive web experiences, my journey has been driven by a passion for visual storytelling and technical precision.
+                    </p>
+                    
+                    <div class="relative pl-10 timeline">
+                        <!-- Timeline Item 1 -->
+                        <div class="relative mb-8">
+                            <div class="absolute left-0 top-2 w-8 h-8 rounded-full bg-cyan flex items-center justify-center">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <h4 class="font-bold text-lg text-white mb-2">2018 - Started with AM</h4>
+                            <p>Began creating motion edits and lyric videos using Alight Motion</p>
+                        </div>
+                        
+                        <!-- Timeline Item 2 -->
+                        <div class="relative mb-8">
+                            <div class="absolute left-0 top-2 w-8 h-8 rounded-full bg-magenta flex items-center justify-center">
+                                <i class="fas fa-pen-fancy"></i>
+                            </div>
+                            <h4 class="font-bold text-lg text-white mb-2">2020 - Design Focus</h4>
+                            <p>Mastered visual design principles, color theory, and motion graphics</p>
+                        </div>
+                        
+                        <!-- Timeline Item 3 -->
+                        <div class="relative">
+                            <div class="absolute left-0 top-2 w-8 h-8 rounded-full bg-lime flex items-center justify-center">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <h4 class="font-bold text-lg text-white mb-2">2022 - Web Development</h4>
+                            <p>Expanded into frontend development, combining motion design with interactive experiences</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Skills -->
+            <div class="mt-20">
+                <h3 class="font-heading text-3xl text-white mb-8 text-center">Skills & Tools</h3>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    <div class="bg-dark rounded-xl p-6 text-center border border-cyan/20">
+                        <i class="fas fa-film text-4xl text-cyan mb-3"></i>
+                        <h4 class="font-bold text-white">Alight Motion</h4>
+                    </div>
+                    <div class="bg-dark rounded-xl p-6 text-center border border-magenta/20">
+                        <i class="fab fa-figma text-4xl text-magenta mb-3"></i>
+                        <h4 class="font-bold text-white">Figma</h4>
+                    </div>
+                    <div class="bg-dark rounded-xl p-6 text-center border border-cyan/20">
+                        <i class="fab fa-html5 text-4xl text-cyan mb-3"></i>
+                        <h4 class="font-bold text-white">HTML/CSS</h4>
+                    </div>
+                    <div class="bg-dark rounded-xl p-6 text-center border border-lime/20">
+                        <i class="fab fa-js text-4xl text-lime mb-3"></i>
+                        <h4 class="font-bold text-white">JavaScript</h4>
+                    </div>
+                    <div class="bg-dark rounded-xl p-6 text-center border border-magenta/20">
+                        <i class="fab fa-git-alt text-4xl text-magenta mb-3"></i>
+                        <h4 class="font-bold text-white">Git</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-20 px-4 bg-secondary">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="font-heading text-4xl md:text-5xl text-center mb-16 text-white">
+                Get In <span class="text-cyan">Touch</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="font-heading text-2xl text-white mb-6">Let's work together</h3>
+                    <p class="mb-8">
+                        Interested in collaborating on a project? Have questions about my services? Feel free to reach out!
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-cyan/10 flex items-center justify-center mr-4">
+                                <i class="fas fa-envelope text-cyan"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">Email</h4>
+                                <p>hadi@example.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-magenta/10 flex items-center justify-center mr-4">
+                                <i class="fab fa-whatsapp text-magenta"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">WhatsApp</h4>
+                                <p>+62 123 4567 8910</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-lime/10 flex items-center justify-center mr-4">
+                                <i class="fas fa-map-marker-alt text-lime"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">Location</h4>
+                                <p>Jakarta, Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10">
+                        <h4 class="font-bold text-white mb-4">Follow Me</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-12 h-12 rounded-full bg-dark flex items-center justify-center hover:bg-cyan/20">
+                                <i class="fab fa-youtube text-cyan"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-dark flex items-center justify-center hover:bg-magenta/20">
+                                <i class="fab fa-instagram text-magenta"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-dark flex items-center justify-center hover:bg-lime/20">
+                                <i class="fab fa-github text-lime"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-dark flex items-center justify-center hover:bg-cyan/20">
+                                <i class="fab fa-behance text-cyan"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <form class="bg-dark rounded-xl p-8">
+                        <div class="mb-6">
+                            <label class="block text-white mb-2">Name</label>
+                            <input type="text" class="w-full px-4 py-3 bg-secondary rounded-lg border border-cyan/30 focus:outline-none focus:border-cyan">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-white mb-2">Email</label>
+                            <input type="email" class="w-full px-4 py-3 bg-secondary rounded-lg border border-cyan/30 focus:outline-none focus:border-cyan">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-white mb-2">Message</label>
+                            <textarea rows="5" class="w-full px-4 py-3 bg-secondary rounded-lg border border-cyan/30 focus:outline-none focus:border-cyan"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-cyan text-dark font-bold rounded-lg hover:bg-white transition">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 px-4 bg-dark">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-white mb-4">
+                © 2023 Hadi. All rights reserved.
+            </p>
+            <p class="text-gray-400">
+                Crafted with <i class="fas fa-heart text-magenta"></i> and GSAP animations
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Hero animation
+        gsap.from('nav', {
+            y: -50,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out"
+        });
+        
+        gsap.from('section#home h1', {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            delay: 0.3
+        });
+        
+        gsap.from('section#home p', {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.6
+        });
+        
+        gsap.from('section#home a', {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.9,
+            stagger: 0.2
+        });
+        
+        // Section animations
+        gsap.utils.toArray('section').forEach((section, index) => {
+            if (index === 0) return; // Skip hero section
+            
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1
+            });
+            
+            gsap.from(section.querySelector('h2'), {
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 85%"
+                },
+                y: 30,
+                opacity: 0,
+                duration: 0.8
+            });
+        });
+        
+        // Card animations
+        gsap.utils.toArray('.card-hover').forEach((card, index) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 90%"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                delay: index * 0.1
+            });
+        });
+        
+        // Timeline animations
+        gsap.utils.toArray('.timeline > div').forEach((item, index) => {
+            gsap.from(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 90%"
+                },
+                x: -30,
+                opacity: 0,
+                duration: 0.8,
+                delay: index * 0.2
+            });
+        });
+    </script>
+</body>
+</html>
